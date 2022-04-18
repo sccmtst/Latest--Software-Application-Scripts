@@ -6,9 +6,21 @@ ex Backup_Google_Chrome_32.msi
 ex Backup_Google_Chrome_64.msi 
   
 you can download from here 
-'https://dl.google.com/tag/s/dl/chrome/install/googlechromestandaloneenterprise64.msi'
-'https://dl.google.com/tag/s/dl/chrome/install/googlechromestandaloneenterprise.msi'
+https://dl.google.com/tag/s/dl/chrome/install/googlechromestandaloneenterprise64.msi
+https://dl.google.com/tag/s/dl/chrome/install/googlechromestandaloneenterprise.msi
   
-Copy the folder containing all the file to your Package Share location and create an Script application 
-For the detection method you will need to use a file detection method you want to set it to verify that 
-C:\Program Files\Google\Chrome\Application\chrome.exe exist 
+Copy the folder containing all the files to your Package Share location and create a script application.
+use the below for the commands 
+
+Install:
+install.cmd
+
+Uninstall:
+install.cmd UNINSTALL
+
+Repair:
+install.cmd REPAIR
+
+
+For the detection method you will need to use a file detection method you want to set it to verify the existance of 
+C:\Program Files\Google\Chrome\Application\chrome.exe  
