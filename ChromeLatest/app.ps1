@@ -23,7 +23,7 @@ function Install-App {
         $Install = (Get-ChildItem | Where-Object -Property Name -like "Backup*$BIT.msi").Name
     }
     $Pros = Start-Process msiexec.exe -ArgumentList "/i $Install /QN /l* $ENV:Temp\Google_Chrome_Install.log" -Wait -PassThru
-    IF ($Pros -ne 0){EXIT $Pros}
+    IF ($Pros.ExitCode -ne 0){EXIT $Pros}
 }
 
 Function Uninstall-App {
@@ -33,7 +33,7 @@ Function Uninstall-App {
     if ($String -eq $null) {Write-Host "Google Chrome is not installed" ; EXIT 0}
     $CODE = $String.Substring($($String.IndexOf("{")))
     $Pros = Start-Process msiexec.exe -ArgumentList "/X $CODE /QN /NORESTART /l* $ENV:Temp\Google_Chrome_Uninstall.log" -Wait -PassThru
-    IF ($Pros -ne 0){EXIT $Pros}
+    IF ($Pros.ExitCode -ne 0){EXIT $Pros}
 }
 
 Function Repair-App {
