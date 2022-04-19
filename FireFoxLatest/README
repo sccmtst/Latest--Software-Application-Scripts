@@ -1,0 +1,26 @@
+To use these scripts in an SCCM Apllication 
+Download a version of firefox you would like to use as a backup version 
+you will need a version for 32 bit and 64 bit if you want to have a back up for each bit version 
+You can name the installers anything but they must incluse "Backup" and the bit version they are used for 
+ex Backup_Mozilla_Firefox_32.msi 
+ex Backup_Mozilla_Firefox_64.msi 
+  
+you can download from here 
+https://download.mozilla.org/?product=firefox-msi-latest-ssl&os=win64&lang=#language
+https://download.mozilla.org/?product=firefox-msi-latest-ssl&os=win&lang=#language
+  
+Copy the folder containing all the files to your Package Share location and create a script application.
+use the below for the commands 
+
+Install:
+install.cmd
+
+Uninstall:
+install.cmd UNINSTALL
+
+Repair:
+install.cmd REPAIR
+
+
+For the detection method you will need to use a file detection method you want to set it to verify the existance of 
+C:\Program Files\Mozilla Firefox\firefox.exe 
