@@ -1,5 +1,5 @@
 To use these scripts in an SCCM Apllication 
-Download a version of firefox you would like to use as a backup version 
+Download a version of Slack you would like to use as a backup version 
 you will need a version for 32 bit and 64 bit if you want to have a back up for each bit version 
 You can name the installers anything but they must incluse "Backup" and the bit version they are used for 
 ex Backup_Slack_32.msi 
