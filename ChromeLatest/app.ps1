@@ -10,6 +10,8 @@ IF (Test-Path "$ENV:SystemDrive\Program files (x86)"){
     $BIT = "32"
 }
 Write-Host "$($Action + "ing") Google Chrome Please Wait..."
+$CurProg = $ProgressPreference
+$ProgressPreference = "SilentlyContinue"
 $FileName = "Google_Chrome_Enterprise_" + $BIT + ".msi"
 Get-Process Chrome -ErrorAction SilentlyContinue | Stop-Process -Force 
 
@@ -23,7 +25,7 @@ function Install-App {
         $Install = (Get-ChildItem | Where-Object -Property Name -like "Backup*$BIT.msi").Name
     }
     $Pros = Start-Process msiexec.exe -ArgumentList "/i $Install /QN /l* $ENV:Temp\Google_Chrome_Install.log" -Wait -PassThru
-    IF ($Pros.ExitCode -ne 0){EXIT $Pros}
+    $StopCode = $($Pros.ExitCode)}
 }
 
 Function Uninstall-App {
@@ -33,7 +35,7 @@ Function Uninstall-App {
     if ($String -eq $null) {Write-Host "Google Chrome is not installed" ; EXIT 0}
     $CODE = $String.Substring($($String.IndexOf("{")))
     $Pros = Start-Process msiexec.exe -ArgumentList "/X $CODE /QN /NORESTART /l* $ENV:Temp\Google_Chrome_Uninstall.log" -Wait -PassThru
-    IF ($Pros.ExitCode -ne 0){EXIT $Pros}
+    $StopCode = $($Pros.ExitCode)
 }
 
 Function Repair-App {
@@ -43,6 +45,9 @@ Function Repair-App {
 
 switch ($Action) {
     'Uninstall' {Uninstall-App}
-    'Repair' {Repair-App}
+    'Repair' {Uninstall-App;Install-App}
     Default {Install-app}
 }
+
+$ProgressPreference = $CurProg
+EXIT $stopcode
