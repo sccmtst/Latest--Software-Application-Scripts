@@ -10,10 +10,9 @@ IF (Test-Path "$ENV:SystemDrive\Program files (x86)"){
     $BIT = "32"
 }
 Write-Host "$($Action + "ing") Google Chrome Please Wait..."
-$CurProg = $ProgressPreference
-$ProgressPreference = "SilentlyContinue"
+$Script:ProgressPreference = "SilentlyContinue"
 $FileName = "Google_Chrome_Enterprise_" + $BIT + ".msi"
-Get-Process Chrome -ErrorAction SilentlyContinue | Stop-Process -Force 
+Get-Process Chrome -ErrorAction SilentlyContinue | Stop-Process -Force
 
 function Install-App {
     try {
@@ -25,11 +24,10 @@ function Install-App {
         $Install = (Get-ChildItem | Where-Object -Property Name -like "Backup*$BIT.msi").Name
     }
     $Pros = Start-Process msiexec.exe -ArgumentList "/i $Install /QN /l* $ENV:Temp\Google_Chrome_Install.log" -Wait -PassThru
-    $StopCode = $($Pros.ExitCode)}
+    $StopCode = $($Pros.ExitCode)
 }
 
 Function Uninstall-App {
-    #Google Keeps switching there uninstall string location this will find it no matter what 
     $String = (Get-ChildItem -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" | Get-Item | Get-ItemProperty | Where-Object -Property DisplayName -like "Google Chrome*").UninstallString
     if ($String -eq $null) {$String = (Get-ChildItem -Path "HKLM:\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall" | Get-Item | Get-ItemProperty | Where-Object -Property DisplayName -like "Google Chrome*").UninstallString}
     if ($String -eq $null) {Write-Host "Google Chrome is not installed" ; EXIT 0}
@@ -38,16 +36,10 @@ Function Uninstall-App {
     $StopCode = $($Pros.ExitCode)
 }
 
-Function Repair-App {
-    Uninstall-App
-    Install-App
-}
-
 switch ($Action) {
     'Uninstall' {Uninstall-App}
     'Repair' {Uninstall-App;Install-App}
     Default {Install-app}
 }
 
-$ProgressPreference = $CurProg
-EXIT $stopcode
+EXIT $StopCode
